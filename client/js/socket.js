@@ -17,12 +17,14 @@ function doConnect(addr) {
     ws.onmessage = function (evt) {
         console.log("Recv: " + evt.data + "\n");
         if (evt.data > -1) {
-            alert("đăng nhập thành công");
             // Cookies.set('username', $('#username').val());
             var username = document.getElementById('username').value;
             document.cookie = "username=" + username;
             document.cookie = "highScore=" + evt.data
             location.href = './game.html'
+        }
+        else{
+            document.getElementById('loginNoti').innerHTML = "account is not available!!!";
         }
     };
 

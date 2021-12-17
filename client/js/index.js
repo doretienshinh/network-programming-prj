@@ -23,11 +23,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     //get my Score
-
-    if(Cookies.get("highscore")){
-        $('#myBestScore').html(Cookies.get("highscore"));
+    //check login
+    if(location.pathname == '/client/game.html'){
+        checkLogin();
+        $('#myBestScore').html(getCookie('highScore'));
     }
-
     //validate
     $.fn.validateForm = function () {
         if ($('#username').val() == '' && $('#password').val() == '') {
@@ -49,6 +49,35 @@ document.addEventListener("DOMContentLoaded", function () {
     //for login
 
 });
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toGMTString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkLogin() {
+    let user = getCookie("username");
+    if (user=='') {
+        location.href = './login.html'
+    }
+}
 
 function logout() {
     location.href = './login.html';
