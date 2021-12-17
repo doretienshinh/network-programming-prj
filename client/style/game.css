@@ -608,3 +608,16 @@ html[subframe] body {
     margin-top: 30px;
   }
 }
+
+#game-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.show-canvas {
+  transition: all 0.8s;
+  transform: scale(2);
+}

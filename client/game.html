@@ -93,15 +93,26 @@
           document.getElementById("main-frame-notchrome").style.display = "";
         }
       </script>
+      <div class="back-menu">
+        back menu
+      </div>
     </div>
   </div>
   <div id="menu">
     <ul>
-      <li><div data-text="Play" onclick="playGame()">Play</div></li>
-      <li><div data-text="My Best Score">My Best Score</div></li>
-      <li><div data-text="High Score">High Score</div></li>
-      <li><div data-text="Log out" onclick="logout()">Log out</div></li>
-  </ul>
+      <li>
+        <div data-text="Play" id="playGame" onclick="playGame()">Play</div>
+      </li>
+      <li>
+        <div data-text="My Best">My Best</div>
+      </li>
+      <li>
+        <div data-text="High Score">High Score</div>
+      </li>
+      <li>
+        <div data-text="Log out" onclick="logout()">Log out</div>
+      </li>
+    </ul>
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.slim.js"
     integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
