@@ -1,4 +1,3 @@
-
 /* WebSocket. */
 var ws;
 var connected = false;
@@ -17,6 +16,14 @@ function doConnect(addr) {
     /* Deals with messages. */
     ws.onmessage = function (evt) {
         console.log("Recv: " + evt.data + "\n");
+        if (evt.data > -1) {
+            alert("đăng nhập thành công");
+            // Cookies.set('username', $('#username').val());
+            var username = document.getElementById('username').value;
+            document.cookie = "username=" + username;
+            document.cookie = "highScore=" + evt.data
+            location.href = './game.html'
+        }
     };
 
     /* Close events. */
@@ -38,10 +45,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
     /* Connect buttom. */
     // ws.close(); //close connection
     /* Send message. */
-    $("#login").click(function () {
-        if (connected == true) {
-            var sendText = $("#username").val();
-            ws.send(sendText);
+    // $("#login").click(function () {
+    //     if (connected == true) {
+    //         var sendText = $("#username").val();
+    //         ws.send(sendText);
+    //     }
+    // })
+    // login
+    $('#login').click(function () {
+        if ($.fn.validateForm()) {
+            if (connected == true) {
+                var loginMes = "1_" + $('#username').val() + "_" + $('#password').val();
+                ws.send(loginMes);
+            }
+            else $('#loginNoti').html('server error!!!');
         }
     })
 });
