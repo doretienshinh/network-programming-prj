@@ -374,13 +374,14 @@ function hideClass(name) {
             this.tRex.playingIntro = false;
             this.containerEl.style.webkitAnimation = '';
             this.playCount++;
+            console.log('startGame');
             // Handle tabbing off the page. Pause the current game.
-            window.addEventListener(Runner.events.VISIBILITY,
-                this.onVisibilityChange.bind(this));
-            window.addEventListener(Runner.events.BLUR,
-                this.onVisibilityChange.bind(this));
-            window.addEventListener(Runner.events.FOCUS,
-                this.onVisibilityChange.bind(this));
+            // window.addEventListener(Runner.events.VISIBILITY,
+            //     this.onVisibilityChange.bind(this));
+            // window.addEventListener(Runner.events.BLUR,
+            //     this.onVisibilityChange.bind(this));
+            // window.addEventListener(Runner.events.FOCUS,
+            //     this.onVisibilityChange.bind(this));
         },
         clearCanvas: function () {
             this.canvasCtx.clearRect(0, 0, this.dimensions.WIDTH,
@@ -564,6 +565,7 @@ function hideClass(name) {
         * Game over state.
         */
         gameOver: function () {
+            // this.distanceMeter.setHighScore(getCookie('highScore'));
             this.playSound(this.soundFx.HIT);
             vibrate(200);
             this.stop();
@@ -581,6 +583,7 @@ function hideClass(name) {
             // Update the high score.
             if (this.distanceRan > this.highestScore) {
                 this.highestScore = Math.ceil(this.distanceRan);
+                console.log(this.highestScore)
                 this.distanceMeter.setHighScore(this.highestScore);
             }
             // Reset the time clock.
@@ -1552,9 +1555,14 @@ function hideClass(name) {
         */
         setHighScore: function (distance) {
             distance = this.getActualDistance(distance);
+            if (distance < getCookie('highScore')) {
+                distance = getCookie('highScore');
+            }
+            else {
+                set_cookie('highScore', distance);
+            }
             var highScoreStr = (this.defaultString +
                 distance).substr(-this.config.MAX_DISTANCE_UNITS);
-            console.log(highScoreStr);
             this.highScore = ['10', '11', ''].concat(highScoreStr.split(''));
         },
         /**
