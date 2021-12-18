@@ -19,3 +19,7 @@ $ ./main
 
 ### Client
 ...
+dùng vscode
+![image](https://user-images.githubusercontent.com/63996925/146645066-ec065d92-07e2-4b13-841e-5cd11ad65090.png)
+mở live server bằng cách click chuột phải rồi chọn open live server và trải nghiệm
+Chúc các bạn trải nghiệm vui vẻ với sản phẩm này :))). Liên hệ với tôi nếu gặp lỗi . . . Cảm ơn.
