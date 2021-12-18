@@ -565,7 +565,6 @@ function hideClass(name) {
         * Game over state.
         */
         gameOver: function () {
-            // this.distanceMeter.setHighScore(getCookie('highScore'));
             this.playSound(this.soundFx.HIT);
             vibrate(200);
             this.stop();
@@ -583,7 +582,6 @@ function hideClass(name) {
             // Update the high score.
             if (this.distanceRan > this.highestScore) {
                 this.highestScore = Math.ceil(this.distanceRan);
-                console.log(this.highestScore)
                 this.distanceMeter.setHighScore(this.highestScore);
             }
             // Reset the time clock.
@@ -1559,7 +1557,6 @@ function hideClass(name) {
                 distance = getCookie('highScore');
             }
             else {
-                console.log('highScore');
                 delete_cookie('highScore');
                 set_cookie('highScore', distance);
                 updateDiem(distance);

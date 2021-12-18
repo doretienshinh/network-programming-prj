@@ -45,18 +45,24 @@ node *AddHead(node *head, char *username, char *password, int highscore)
   }
   return head;
 }
+int registerAcc(node *head, char *username, char *password)
+{
+  head = AddHead(head, username, password, 0);
+  reWriteFile(head);
+  return 0;
+}
 void updateScore(node *head, char *username, int highscore)
 {
-	for (node *p = head; p->next != NULL; p = p->next)
-	{
-		if (strcmp(p->username, username) == 0)
-		{
-			p->highscore = highscore;
-			reWriteFile(head);
-			return;
-		}
-	}
-	return;
+  for (node *p = head; p->next != NULL; p = p->next)
+  {
+    if (strcmp(p->username, username) == 0)
+    {
+      p->highscore = highscore;
+      reWriteFile(head);
+      return;
+    }
+  }
+  return;
 }
 int logIn(node *head, char *username, char *password)
 {
@@ -143,15 +149,21 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // vi�
   cli = ws_getaddress(fd);
 #ifndef DISABLE_VERBOSE
   strcpy(buffer, msg);
-  if (buffer[0] == '1')
+  if (buffer[0] == '1') // đăng nhập
   {
     handlCliMes(buffer); // lấy được username password của người dùng input
     loginScore = logIn(root, usernameCli, passwordCli);
   }
-  if(buffer[0] == '2'){
+  if (buffer[0] == '2')
+  { // update điểm
     handlCliMes(buffer);
     int x = atoi(passwordCli);
     updateScore(root, usernameCli, x);
+  }
+  if (buffer[0] == '0')
+  { //đăng ký
+    handlCliMes(buffer);
+    loginScore = registerAcc(root, usernameCli, passwordCli);
   }
   printf("I receive a message: %s (size: %" PRId64 ", type: %d), from: %s/%d\n", msg, size, type, cli, fd);
 #endif

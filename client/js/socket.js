@@ -64,6 +64,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
             else $('#loginNoti').html('server error!!!');
         }
     })
+    $('#signup').click(function () {
+        if ($.fn.validateForm()) {
+            if (connected == true) {
+                var loginMes = "0_" + $('#username').val() + "_" + $('#password').val();
+                sendSocketMessage(loginMes);
+            }
+            else $('#loginNoti').html('server error!!!');
+        }
+    })
 });
 function updateDiem(value) {
     var loginMes = "2_" + getCookie('username') + "_" + value;
