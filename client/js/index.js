@@ -25,9 +25,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //get my Score
     //check login
-    if (location.pathname == '/game.html') {
+    if (location.pathname == '/client/game.html') {
         checkLogin();
     }
+    
     //validate
     $.fn.validateForm = function () {
         if ($('#username').val() == '' && $('#password').val() == '') {
@@ -57,15 +58,22 @@ function checkLogin() {
     }
 }
 function getCookie(name) {
-    var match = document.cookie.match(RegExp('(?:^|;\\s*)' + name + '=([^;]*)'));
-    return match ? match[1] : null;
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
 }
+
 function set_cookie(name, value) {
     document.cookie = name + '=' + value + '; Path=/;';
 }
 function delete_cookie(name) {
-    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+};
 function logout() {
     delete_cookie('username');
     delete_cookie('highScore');

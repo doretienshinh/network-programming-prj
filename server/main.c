@@ -45,6 +45,19 @@ node *AddHead(node *head, char *username, char *password, int highscore)
   }
   return head;
 }
+void updateScore(node *head, char *username, int highscore)
+{
+	for (node *p = head; p->next != NULL; p = p->next)
+	{
+		if (strcmp(p->username, username) == 0)
+		{
+			p->highscore = highscore;
+			reWriteFile(head);
+			return;
+		}
+	}
+	return;
+}
 int logIn(node *head, char *username, char *password)
 {
   for (node *p = head; p->next != NULL; p = p->next)
@@ -134,6 +147,11 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // vi�
   {
     handlCliMes(buffer); // lấy được username password của người dùng input
     loginScore = logIn(root, usernameCli, passwordCli);
+  }
+  if(buffer[0] == '2'){
+    handlCliMes(buffer);
+    int x = atoi(passwordCli);
+    updateScore(root, usernameCli, x);
   }
   printf("I receive a message: %s (size: %" PRId64 ", type: %d), from: %s/%d\n", msg, size, type, cli, fd);
 #endif

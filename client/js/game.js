@@ -1559,7 +1559,10 @@ function hideClass(name) {
                 distance = getCookie('highScore');
             }
             else {
+                console.log('highScore');
+                delete_cookie('highScore');
                 set_cookie('highScore', distance);
+                updateDiem(distance);
             }
             var highScoreStr = (this.defaultString +
                 distance).substr(-this.config.MAX_DISTANCE_UNITS);

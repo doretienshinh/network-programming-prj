@@ -23,7 +23,7 @@ function doConnect(addr) {
             document.cookie = "highScore=" + evt.data
             location.href = './game.html'
         }
-        else{
+        else {
             document.getElementById('loginNoti').innerHTML = "account is not available!!!";
         }
     };
@@ -39,6 +39,7 @@ function sendSocketMessage(value) {
     if (connected == true) {
         ws.send(value);
     }
+    else alert("Server error!!!");
 }
 document.addEventListener("DOMContentLoaded", function (event) {
     if (connected == false) {
@@ -58,9 +59,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if ($.fn.validateForm()) {
             if (connected == true) {
                 var loginMes = "1_" + $('#username').val() + "_" + $('#password').val();
-                ws.send(loginMes);
+                sendSocketMessage(loginMes);
             }
             else $('#loginNoti').html('server error!!!');
         }
     })
 });
+function updateDiem(value) {
+    var loginMes = "2_" + getCookie('username') + "_" + value;
+    sendSocketMessage(loginMes);
+}
