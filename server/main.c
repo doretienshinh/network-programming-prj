@@ -158,70 +158,91 @@ void onclose(int fd)
 
 void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // viết xử lý vào trong này luôn
 {
-  int loginScore, roar = 0;
+  char res[100];
+  int loginScore = 0, roar = 0;
+  int top1 = 0;
+  int state = 0;
   char *cli;
   cli = ws_getaddress(fd);
 #ifndef DISABLE_VERBOSE
   strcpy(buffer, msg);
-  if (buffer[0] == '1') // đăng nhập
+
+  switch (buffer[0])
   {
-    handlCliMes(buffer); // lấy được username password của người dùng input
-    loginScore = logIn(root, usernameCli, passwordCli);
-  }
-  if (buffer[0] == '2')
-  { // update điểm
-    roar = 1;
-    handlCliMes(buffer);
-    int x = atoi(passwordCli);
-    updateScore(root, usernameCli, x);
-    loginScore = x;
-  }
-  if (buffer[0] == '0')
+  case '0':
   { //đăng ký
     handlCliMes(buffer);
     loginScore = registerAcc(root, usernameCli, passwordCli);
+    state = 0;
+    break;
   }
-  if (buffer[0] == '3')
+  case '1':
   {
-    // gáy
-    roar = 1;
     handlCliMes(buffer); // lấy được username password của người dùng input
     loginScore = logIn(root, usernameCli, passwordCli);
+    state = 1;
+    break;
   }
+  case '2':
+  { // update điểm
+    // roar = 1;
+    handlCliMes(buffer);
+    int newScore = atoi(passwordCli);
+    // check top1 or not
+    top1 = top1Score(root);
+    updateScore(root, usernameCli, newScore);
+    loginScore = newScore;
+    state = 2;
+    break;
+  }
+  case '3':
+  {
+    loginScore = top1Score(root);
+    state = 3;
+    break;
+  }
+  default:
+    state = -1;
+    break;
+  }
+  // if (buffer[0] == '3')
+  // {
+  //   // gáy
+  //   roar = 1;
+  //   handlCliMes(buffer); // lấy được username password của người dùng input
+  //   loginScore = logIn(root, usernameCli, passwordCli);
+  // }
   printf("I receive a message: %s (size: %" PRId64 ", type: %d), from: %s/%d\n", msg, size, type, cli, fd);
 #endif
   free(cli);
-  if (loginScore > -1) // trả về lớn hơn -1 tức là đã có tài khoản
+  switch (state)
   {
-    if (roar == 0)
+  case 0:
+    ws_sendframe_txt(fd, "0_1", false);
+    break;
+  case 1:
+    sprintf(res, "1_%d", loginScore);
+    ws_sendframe_txt(fd, res, false);
+    break;
+  case 2:
+    if (loginScore >= top1)
     {
-      char text[20];
-      sprintf(text, "%d", loginScore);
-      ws_sendframe_txt(fd, text, false);
-    }
-    else if (roar == 1)
-    {
-      char text[100];
-      sprintf(text, "%s được %d điểm và đang gáy rất tooo!!!", usernameCli, loginScore);
-      ws_sendframe_txt(fd, text, true);
-      roar = 0;
-    }
-  }
-  else if (loginScore == -1) // trả về -1 tức là chưa có tài khoản
-  {
-    ws_sendframe_txt(fd, "Tài khoản sai", false);
-  }
-  else
-  {
-    if (roar == 1)
-    {
-      char text[100];
-      sprintf(text, "%s vừa đạt được %d điểm và đang gáy rất tooo!!!", usernameCli, loginScore);
-      ws_sendframe_txt(fd, text, true);
-      roar = 0;
+      sprintf(res, "2_1_%s_%d", usernameCli, loginScore);
+      ws_sendframe_txt(fd, res, true);
     }
     else
-      ws_sendframe(fd, (char *)msg, size, true, type); // gửi lại tin nhắn cho client
+    {
+      sprintf(res, "2_2_%d", loginScore);
+      ws_sendframe_txt(fd, res, false);
+    }
+    break;
+  case 3:
+    sprintf(res, "3_%d", loginScore);
+    ws_sendframe_txt(fd, res, false);
+    break;
+  default:
+    ws_sendframe_txt(fd, "Lỗi gì đó ngớ ngẩn!!!", false);
+    break;
   }
 }
 int main(void)

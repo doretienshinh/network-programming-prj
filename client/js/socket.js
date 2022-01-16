@@ -3,6 +3,9 @@ var ws;
 var connected = false;
 
 /* Establish connection. */
+if (connected == false) {
+    doConnect('ws://localhost:8080');
+}
 function doConnect(addr) {
 
     /* Do connection. */
@@ -16,17 +19,45 @@ function doConnect(addr) {
     /* Deals with messages. */
     ws.onmessage = function (evt) {
         console.log("Recv: " + evt.data + "\n");
-        // alert(evt.data);
-        if (evt.data > -1) {
-            // Cookies.set('username', $('#username').val());
-            var username = document.getElementById('username').value;
-            document.cookie = "username=" + username;
-            document.cookie = "highScore=" + evt.data
-            location.href = './game.html'
+        var response = evt.data;
+        console.log(response.split("_"));
+        if (response.split("_")[0] == 0) {//đăng ký
+            if (response.split("_")[1] == 1) { //đăng ký thành công
+                var username = document.getElementById('username').value;
+                document.cookie = "username=" + username;
+                document.cookie = "highScore=" + 0;
+                location.href = './game.html'
+            }
+            else {
+                document.getElementById('loginNoti').innerHTML = "Create account error!!!";
+            }
         }
-        else {
-            document.getElementById('loginNoti').innerHTML = "account is not available!!!";
+        else if (response.split("_")[0] == 1) {//đăng nhập
+            if (response.split("_")[1] != -1) { //đăng nhập thành công
+                var username = document.getElementById('username').value;
+                document.cookie = "username=" + username;
+                document.cookie = "highScore=" + response.split("_")[1];
+                location.href = './game.html'
+                console.log(1);
+            }
+            else {
+                document.getElementById('loginNoti').innerHTML = "Login error!!!";
+            }
         }
+        else if (response.split("_")[0] == 2) {//Update điểm
+            if (response.split("_")[1] == 1) {//Update điểm
+                if (response.split("_")[2] == getCookie('username')) {
+                    alert("Chúc mừng bạn vừa giành top 1, hãy giữ vững phong độ nhé!");
+                }
+                else {
+                    alert(response.split("_")[2] + " vừa giành top 1 với " +response.split("_")[3] +" điểm, cướp lại thôi nào!");
+                }
+            }
+        }
+        else if (response.split("_")[0] == 3) {//Update điểm
+            console.log(response);
+        }
+        else alert(response);
     };
 
     /* Close events. */
@@ -43,19 +74,6 @@ function sendSocketMessage(value) {
     else alert("Server error!!!");
 }
 document.addEventListener("DOMContentLoaded", function (event) {
-    if (connected == false) {
-        doConnect('ws://localhost:8080');
-    }
-    /* Connect buttom. */
-    // ws.close(); //close connection
-    /* Send message. */
-    // $("#login").click(function () {
-    //     if (connected == true) {
-    //         var sendText = $("#username").val();
-    //         ws.send(sendText);
-    //     }
-    // })
-    // login
     $('#login').click(function () {
         if ($.fn.validateForm()) {
             if (connected == true) {
@@ -76,6 +94,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
     })
 });
 function updateDiem(value) {
-    var mess = "2_" + getCookie('username') + "_" + value;
+    var score = value.toString()
+    var mess = "2_" + getCookie('username') + "_" + score;
     sendSocketMessage(mess);
+    // if (connected == true) {
+    // }
+    // else console.log('server error!!!');
+}
+function max() {
+    var mess = "3";
+    sendSocketMessage(mess);
+    // if (connected == true) {
+    // }
+    // else console.log('server error!!!');
 }

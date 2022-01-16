@@ -586,7 +586,7 @@ function hideClass(name) {
             }
             // Reset the time clock.
             this.time = getTimeStamp();
-            window.location.reload();
+            // window.location.reload();
         },
         stop: function () {
             this.activated = false;
