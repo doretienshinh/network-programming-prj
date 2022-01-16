@@ -99,6 +99,60 @@ int top1Score(node *head)
   }
   return Max;
 }
+void rank(node *head, char *cpyString)
+{
+  int scores[4];
+  char users[4][100];
+  char top3OnRank[1000];
+  // strcpy(scores[0], head->username);
+  for (int i = 0; i < 4; i++)
+  {
+    scores[i] = head->highscore;
+    strcpy(users[i], head->username);
+  }
+  node *p = head;
+  while (p != NULL)
+  {
+    if (scores[0] < p->highscore)
+    {
+      scores[0] = p->highscore;
+      strcpy(users[0], p->username);
+    }
+    p = p->next;
+  }
+  node *k = head;
+  while (k != NULL)
+  {
+    if (scores[1] < k->highscore && strcmp(users[0], k->username) != 0)
+    {
+      scores[1] = k->highscore;
+      strcpy(users[1], k->username);
+    }
+    k = k->next;
+  }
+  node *l = head;
+  while (l != NULL)
+  {
+    if (scores[2] < l->highscore && strcmp(users[1], l->username) != 0 && strcmp(users[0], l->username) != 0)
+    {
+      scores[2] = l->highscore;
+      strcpy(users[2], l->username);
+    }
+    l = l->next;
+  }
+  sprintf(top3OnRank, "%s_%d_%s_%d_%s_%d_%s_%d", users[0], scores[0], users[1], scores[1], users[2], scores[2], users[3], scores[3]);
+  strcpy(cpyString, top3OnRank);
+  // int Max = head->highscore;
+  // while (p != NULL)
+  // {
+  //   if (Max < p->highscore)
+  //   {
+  //     Max = p->highscore;
+  //   }
+
+  //   p = p->next;
+  // }
+}
 void reWriteFile(node *head)
 {
   FILE *fWrite;
@@ -159,6 +213,7 @@ void onclose(int fd)
 void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // viết xử lý vào trong này luôn
 {
   char res[100];
+  char users[100];
   int loginScore = 0, roar = 0;
   int top1 = 0;
   int state = 0;
@@ -201,6 +256,13 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // vi�
     state = 3;
     break;
   }
+  case '4':
+  {
+    rank(root, users);
+    // printf("%s", res);
+    state = 4;
+    break;
+  }
   default:
     state = -1;
     break;
@@ -238,6 +300,10 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // vi�
     break;
   case 3:
     sprintf(res, "3_%d", loginScore);
+    ws_sendframe_txt(fd, res, false);
+    break;
+  case 4:
+    sprintf(res, "4_%s", users);
     ws_sendframe_txt(fd, res, false);
     break;
   default:
