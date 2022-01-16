@@ -586,6 +586,7 @@ function hideClass(name) {
             }
             // Reset the time clock.
             this.time = getTimeStamp();
+            window.location.reload();
         },
         stop: function () {
             this.activated = false;
@@ -1561,9 +1562,9 @@ function hideClass(name) {
                 set_cookie('highScore', distance);
                 updateDiem(distance);
             }
-            var highScoreStr = (this.defaultString +
-                distance).substr(-this.config.MAX_DISTANCE_UNITS);
-            this.highScore = ['10', '11', ''].concat(highScoreStr.split(''));
+            // var highScoreStr = (this.defaultString +
+            //     distance).substr(-this.config.MAX_DISTANCE_UNITS);
+            // this.highScore = ['10', '11', ''].concat(highScoreStr.split(''));
         },
         /**
         * Reset the distance meter back to '00000'.

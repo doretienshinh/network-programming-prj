@@ -16,6 +16,7 @@ function doConnect(addr) {
     /* Deals with messages. */
     ws.onmessage = function (evt) {
         console.log("Recv: " + evt.data + "\n");
+        // alert(evt.data);
         if (evt.data > -1) {
             // Cookies.set('username', $('#username').val());
             var username = document.getElementById('username').value;
@@ -75,6 +76,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     })
 });
 function updateDiem(value) {
-    var loginMes = "2_" + getCookie('username') + "_" + value;
-    sendSocketMessage(loginMes);
+    var mess = "2_" + getCookie('username') + "_" + value;
+    sendSocketMessage(mess);
 }
