@@ -67,7 +67,11 @@ function doConnect(addr) {
         else if (response.split("_")[0] == 4) {
             console.log("Kết quả: " + response);
             var top3Rank = response.split("_");
-            var j = 1;
+            var j = 2;
+            var rank = response.split("_")[1];
+            if(rank > 3) {
+                document.getElementById("rank").innerHTML = `${rank}`;
+            }
             var username = getCookie('username');
             for (var i = 1; i < 4; i++) {
                 if (username == top3Rank[j]) {
