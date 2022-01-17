@@ -16,6 +16,7 @@ typedef struct LinkedList
 char buffer[100]; // buffer[0]: 1-login, 0-register, 2-update,
 char usernameCli[100];
 char passwordCli[100];
+int my_rank = 0;
 node *root;
 
 void reWriteFile(node *head);
@@ -80,6 +81,19 @@ int checkDupAcc(node *head, char *username)
     }
   }
   return 0;
+}
+
+int checkRank(node *head, int score)
+{
+  int rank = 1;
+  for (node *p = head; p->next != NULL; p = p->next)
+  {
+    if (score < p->highscore)
+    {
+      rank = rank + 1;
+    }
+  }
+  return rank;
 }
 
 int logIn(node *head, char *username, char *password)
@@ -260,6 +274,7 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // vi�
     Traverser(root);
     handlCliMes(buffer); // lấy được username password của người dùng input
     loginScore = logIn(root, usernameCli, passwordCli);
+    my_rank = checkRank(root, loginScore);
     state = 1;
     break;
   }
@@ -329,7 +344,7 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // vi�
     ws_sendframe_txt(fd, res, true);
     break;
   case 4:
-    sprintf(res, "4_%s", users);
+    sprintf(res, "4_%d_%s", my_rank, users);
     ws_sendframe_txt(fd, res, false);
     break;
   case 5:
