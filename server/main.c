@@ -103,15 +103,15 @@ int top1Score(node *head)
 }
 void rank(node *head, char *cpyString)
 {
-  int scores[3];
-  char users[3][100];
+  int scores[3] = {0,0,0};
+  char users[3][100] = {"none", "none", "none"};
   char top3OnRank[1000];
   // strcpy(scores[0], head->username);
-  for (int i = 0; i < 3; i++)
-  {
-    scores[i] = head->highscore;
-    strcpy(users[i], head->username);
-  }
+  // for (int i = 0; i < 3; i++)
+  // {
+  //   scores[i] = head->highscore;
+  //   strcpy(users[i], head->username);
+  // }
   node *p = head;
   while (p != NULL)
   {
@@ -216,7 +216,7 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // viá
 {
   char res[100];
   char users[100];
-  int loginScore = 0, roar = 0;
+  int loginScore = 0;
   int top1 = 0;
   int state = 0;
   char *cli;

@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     $('#game-screen').hide();
     $("#mybest-screen").hide();
-    $("#chat-screen").hide();
+    // $("#chat-screen").hide();
     $('#menu').show('slow');
     $("#playGame").on("click", function () {
         $('#game-screen').show('slow');
