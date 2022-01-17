@@ -25,3 +25,6 @@ dùng vscode
 
 mở live server bằng cách click chuột phải rồi chọn open live server và trải nghiệm
 Chúc các bạn trải nghiệm vui vẻ với sản phẩm này :))). Liên hệ với tôi nếu gặp lỗi . . . Cảm ơn.
+
+https://youtu.be/9-9qBgdyF1Q
+Truy cập vào link bên trên để xem demo nhé!
