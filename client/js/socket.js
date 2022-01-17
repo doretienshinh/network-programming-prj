@@ -50,12 +50,30 @@ function doConnect(addr) {
                     alert("Chúc mừng bạn vừa giành top 1, hãy giữ vững phong độ nhé!");
                 }
                 else {
-                    alert(response.split("_")[2] + " vừa giành top 1 với " +response.split("_")[3] +" điểm, cướp lại thôi nào!");
+                    alert(response.split("_")[2] + " vừa giành top 1 với " + response.split("_")[3] + " điểm, cướp lại thôi nào!");
                 }
             }
         }
         else if (response.split("_")[0] == 3) {//Update điểm
             console.log(response);
+        }
+        else if (response.split("_")[0] == 4) {
+            console.log("Kết quả: " + response);
+            var top3Rank = response.split("_");
+            var j = 1;
+            var username = getCookie('username');
+            for (var i = 1; i < 4; i++) {
+                if(username == top3Rank[j]){
+                    document.getElementById("top" + i + "Name").innerHTML = "you";
+                    document.getElementById("top" + i).style.color = 'red';
+                    document.getElementById("noRank").style.display = 'none';
+                    j++;
+                }
+                else{
+                    document.getElementById("top" + i + "Name").innerHTML = top3Rank[j++];
+                }
+                document.getElementById("top" + i + "Score").innerHTML = top3Rank[j++];
+            }
         }
         else alert(response);
     };
@@ -92,6 +110,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
             else $('#loginNoti').html('server error!!!');
         }
     })
+    $('#myBest').click(function () {
+        var mess = "4";
+        sendSocketMessage(mess);
+    })
 });
 function updateDiem(value) {
     var score = value.toString()
@@ -101,8 +123,8 @@ function updateDiem(value) {
     // }
     // else console.log('server error!!!');
 }
-function max() {
-    var mess = "3";
+function rank() {
+    var mess = "4";
     sendSocketMessage(mess);
     // if (connected == true) {
     // }

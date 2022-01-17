@@ -87,3 +87,6 @@ td, th {
   vertical-align: center;
   text-align: center;
 }
+.hidenNoRank{
+  display: none;
+}

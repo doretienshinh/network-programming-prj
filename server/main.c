@@ -101,11 +101,11 @@ int top1Score(node *head)
 }
 void rank(node *head, char *cpyString)
 {
-  int scores[4];
-  char users[4][100];
+  int scores[3];
+  char users[3][100];
   char top3OnRank[1000];
   // strcpy(scores[0], head->username);
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 3; i++)
   {
     scores[i] = head->highscore;
     strcpy(users[i], head->username);
@@ -140,7 +140,7 @@ void rank(node *head, char *cpyString)
     }
     l = l->next;
   }
-  sprintf(top3OnRank, "%s_%d_%s_%d_%s_%d_%s_%d", users[0], scores[0], users[1], scores[1], users[2], scores[2], users[3], scores[3]);
+  sprintf(top3OnRank, "%s_%d_%s_%d_%s_%d", users[0], scores[0], users[1], scores[1], users[2], scores[2]);
   strcpy(cpyString, top3OnRank);
   // int Max = head->highscore;
   // while (p != NULL)
