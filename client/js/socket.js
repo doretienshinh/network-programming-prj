@@ -21,13 +21,14 @@ function doConnect(addr) {
         console.log("Recv: " + evt.data + "\n");
         var response = evt.data;
         console.log(response.split("_"));
+        var alertNoti = document.getElementById('alertNoti');
         if (response.split("_")[0] == 0) {//đăng ký
             if (response.split("_")[1] == 1) { //đăng ký thành công
                 var username = document.getElementById('username').value;
                 document.cookie = "username=" + username;
                 document.cookie = "highScore=" + 0;
                 location.href = './game.html'
-            }else if(response.split("_")[1] == 0) {
+            } else if (response.split("_")[1] == 0) {
                 document.getElementById('loginNoti').innerHTML = "Registered Account!!!";
             }
             else {
@@ -61,7 +62,13 @@ function doConnect(addr) {
                 // alert("Chúc mừng bạn vừa giành top 1, hãy giữ vững phong độ nhé!");
             }
             else {
-                alert(response.split("_")[1] + " đang gáy rất to với " + response.split("_")[2] + " điểm");
+                alertNoti.style.display = 'block';
+                alertNoti.innerHTML = response.split("_")[1] + " have " + response.split("_")[2] + " points, hahahaha";
+                setTimeout(function () {
+                    alertNoti.style.display = 'none';
+                }, 5000);
+                // alert(response.split("_")[1] + " đang gáy rất to với " + response.split("_")[2] + " điểm");
+
             }
         }
         else if (response.split("_")[0] == 4) {
@@ -69,7 +76,7 @@ function doConnect(addr) {
             var top3Rank = response.split("_");
             var j = 2;
             var rank = response.split("_")[1];
-            if(rank > 3) {
+            if (rank > 3) {
                 document.getElementById("rank").innerHTML = `${rank}`;
             }
             var username = getCookie('username');

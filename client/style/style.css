@@ -11,7 +11,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  padding-top: 60px;
   overflow: hidden;
 }
 #menu ul li {
@@ -89,4 +90,16 @@ td, th {
 }
 .hidenNoRank{
   display: none;
+}
+#mainScreen{
+  padding-top: 80px;
+}
+body{
+  position: relative;
+}
+.alert{
+  position: absolute;
+  margin: 20px;
+  width: calc(100% - 40px);
+  text-align: center;
 }
