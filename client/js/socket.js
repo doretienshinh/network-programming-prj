@@ -27,6 +27,8 @@ function doConnect(addr) {
                 document.cookie = "username=" + username;
                 document.cookie = "highScore=" + 0;
                 location.href = './game.html'
+            }else if(response.split("_")[1] == 0) {
+                document.getElementById('loginNoti').innerHTML = "Registered Account!!!";
             }
             else {
                 document.getElementById('loginNoti').innerHTML = "Create account error!!!";

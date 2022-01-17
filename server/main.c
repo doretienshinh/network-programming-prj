@@ -17,6 +17,9 @@ char buffer[100]; // buffer[0]: 1-login, 0-register, 2-update,
 char usernameCli[100];
 char passwordCli[100];
 node *root;
+
+void reWriteFile(node *head);
+
 node *CreateNode(char *username, char *password, int highscore)
 {
   node *temp;                          // declare a node
@@ -66,6 +69,19 @@ void updateScore(node *head, char *username, int highscore)
   }
   return;
 }
+
+int checkDupAcc(node *head, char *username)
+{
+  for (node *p = head; p->next != NULL; p = p->next)
+  {
+    if (strcmp(p->username, username) == 0)
+    {
+      return -1;
+    }
+  }
+  return 0;
+}
+
 int logIn(node *head, char *username, char *password)
 {
   for (node *p = head; p->next != NULL; p = p->next)
@@ -229,6 +245,11 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // vi�
   case '0':
   { //đăng ký
     handlCliMes(buffer);
+    int check = checkDupAcc(root, usernameCli);
+    if(check == -1 ) {
+      state = 5;
+      break;
+    }
     root = registerAcc(root, usernameCli, passwordCli);
     Traverser(root);
     state = 0;
@@ -310,6 +331,9 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // vi�
   case 4:
     sprintf(res, "4_%s", users);
     ws_sendframe_txt(fd, res, false);
+    break;
+  case 5:
+    ws_sendframe_txt(fd, "0_0", false);
     break;
   default:
     ws_sendframe_txt(fd, "Lỗi gì đó ngớ ngẩn!!!", false);
