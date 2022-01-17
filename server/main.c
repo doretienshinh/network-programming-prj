@@ -252,7 +252,8 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // viá
   }
   case '3':
   {
-    loginScore = top1Score(root);
+    // loginScore = top1Score(root);
+    handlCliMes(buffer);
     state = 3;
     break;
   }
@@ -299,8 +300,8 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // viá
     }
     break;
   case 3:
-    sprintf(res, "3_%d", loginScore);
-    ws_sendframe_txt(fd, res, false);
+    sprintf(res, "3_%s_%s",usernameCli , passwordCli);
+    ws_sendframe_txt(fd, res, true);
     break;
   case 4:
     sprintf(res, "4_%s", users);

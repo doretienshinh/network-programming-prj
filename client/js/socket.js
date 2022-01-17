@@ -54,8 +54,13 @@ function doConnect(addr) {
                 }
             }
         }
-        else if (response.split("_")[0] == 3) {//Update điểm
-            console.log(response);
+        else if (response.split("_")[0] == 3) {//gáy
+            if (response.split("_")[1] == getCookie('username')) {
+                // alert("Chúc mừng bạn vừa giành top 1, hãy giữ vững phong độ nhé!");
+            }
+            else {
+                alert(response.split("_")[1] + " đang gáy rất to với " + response.split("_")[2] + " điểm");
+            }
         }
         else if (response.split("_")[0] == 4) {
             console.log("Kết quả: " + response);
@@ -63,19 +68,19 @@ function doConnect(addr) {
             var j = 1;
             var username = getCookie('username');
             for (var i = 1; i < 4; i++) {
-                if(username == top3Rank[j]){
+                if (username == top3Rank[j]) {
                     document.getElementById("top" + i + "Name").innerHTML = "you";
                     document.getElementById("top" + i).style.color = 'red';
                     document.getElementById("noRank").style.display = 'none';
                     j++;
                 }
-                else{
+                else {
                     document.getElementById("top" + i + "Name").innerHTML = top3Rank[j++];
                 }
                 document.getElementById("top" + i + "Score").innerHTML = top3Rank[j++];
             }
         }
-        else alert(response);
+        else console.log(response);
     };
 
     /* Close events. */
@@ -111,8 +116,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     })
     $('#myBest').click(function () {
-        var mess = "4";
-        sendSocketMessage(mess);
+        if (connected == true) {
+            var mess = "4";
+            sendSocketMessage(mess);
+        }
+        else alert("server error!!!");
+    })
+    $('#roar').click(function () {
+        if (connected == true) {
+            var mess = "3_" + getCookie('username') + "_" + getCookie('highScore');
+            sendSocketMessage(mess);
+        }
+        else alert("server error!!!");
     })
 });
 function updateDiem(value) {
@@ -123,10 +138,7 @@ function updateDiem(value) {
     // }
     // else console.log('server error!!!');
 }
-function rank() {
-    var mess = "4";
-    sendSocketMessage(mess);
-    // if (connected == true) {
-    // }
-    // else console.log('server error!!!');
-}
+// function rank() {
+//     var mess = "4";
+//     sendSocketMessage(mess);
+// }

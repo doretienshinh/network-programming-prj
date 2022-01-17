@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     $('#game-screen').hide();
     $("#mybest-screen").hide();
-    $("#chat-screen").hide();
+    // $("#chat-screen").hide();
     $('#menu').show('slow');
     $("#playGame").on("click", function () {
         $('#game-screen').show('slow');
@@ -23,13 +23,13 @@ document.addEventListener("DOMContentLoaded", function () {
         $('.runner-canvas').removeClass('show-canvas');
         $('#menu').hide('slow');
     });
-    $("#roar").on("click", function () {
-        // $('#game-screen').hide('slow');
-        // $('.runner-canvas').removeClass('show-canvas');
-        // $("#mybest-screen").hide('slow');
-        $('#menu').hide('slow');
-        $('#chat-screen').show();
-    });
+    // $("#roar").on("click", function () {
+    //     // $('#game-screen').hide('slow');
+    //     // $('.runner-canvas').removeClass('show-canvas');
+    //     // $("#mybest-screen").hide('slow');
+    //     $('#menu').hide('slow');
+    //     $('#chat-screen').show();
+    // });
 
 
     //get my Score
