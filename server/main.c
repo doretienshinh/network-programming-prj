@@ -45,11 +45,13 @@ node *AddHead(node *head, char *username, char *password, int highscore)
   }
   return head;
 }
-int registerAcc(node *head, char *username, char *password)
+node *registerAcc(node *head, char *username, char *password)
 {
+  // Traverser(head);
   head = AddHead(head, username, password, 0);
+  // Traverser(head);
   reWriteFile(head);
-  return 0;
+  return head;
 }
 void updateScore(node *head, char *username, int highscore)
 {
@@ -227,12 +229,14 @@ void onmessage(int fd, const unsigned char *msg, uint64_t size, int type) // vi�
   case '0':
   { //đăng ký
     handlCliMes(buffer);
-    loginScore = registerAcc(root, usernameCli, passwordCli);
+    root = registerAcc(root, usernameCli, passwordCli);
+    Traverser(root);
     state = 0;
     break;
   }
   case '1':
   {
+    Traverser(root);
     handlCliMes(buffer); // lấy được username password của người dùng input
     loginScore = logIn(root, usernameCli, passwordCli);
     state = 1;
